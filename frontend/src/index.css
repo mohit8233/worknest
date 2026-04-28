@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  @apply bg-white text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100;
+}
+
+@layer components {
+  .theme-page {
+    @apply bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100;
+  }
+
+  .theme-section {
+    @apply bg-white text-slate-900 transition-colors duration-300 dark:bg-slate-900 dark:text-slate-100;
+  }
+
+  .theme-section-soft {
+    @apply bg-slate-100 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100;
+  }
+
+  .theme-card {
+    @apply border border-slate-200 bg-white text-slate-900 shadow-md transition-colors duration-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100;
+  }
+
+  .theme-muted {
+    @apply text-slate-600 dark:text-slate-300;
+  }
+
+  .theme-input {
+    @apply w-full rounded-xl border border-slate-200 bg-blue-50 p-3 text-slate-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-400;
+  }
+}
