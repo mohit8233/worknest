@@ -9,8 +9,8 @@ Users can explore jobs, apply with resumes, and admins can manage hiring workflo
 
 ## 🌐 Live Demo
 
-🔗 Frontend: https://your-frontend.vercel.app  
-🔗 Backend API: https://your-backend.onrender.com  
+🔗 Frontend: 
+🔗 Backend API: 
 
 ---
 
