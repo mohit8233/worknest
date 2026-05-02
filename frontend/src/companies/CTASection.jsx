@@ -15,7 +15,7 @@ const CTASection = () => {
 
       <div className="flex flex-col sm:flex-row justify-center gap-4">
         <button
-          onClick={() => navigate("/register")}
+          onClick={() => navigate("/signup")}
           className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-200 transition"
         >
           Create Account
