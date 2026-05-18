@@ -114,22 +114,25 @@ export const applyJob = async (req, res) => {
       });
     }
 
-    const isValidJobId = jobId && mongoose.Types.ObjectId.isValid(jobId);
+  
 
     let finalJobTitle = jobTitle;
     let finalCompany = company;
 
-    if (isValidJobId) {
-      const job = await Job.findById(jobId);
+   const isValidJobId =
+  jobId && mongoose.Types.ObjectId.isValid(jobId);
 
-      if (job) {
-        finalJobTitle = job.title;
-        finalCompany = job.company;
-      }
-    }
+if (isValidJobId) {
+  const job = await Job.findById(jobId);
+
+  if (job) {
+    finalJobTitle = job.title;
+    finalCompany = job.company;
+  }
+}
 
     const application = await Application.create({
-      jobId: isValidJobId ? jobId : undefined,
+     jobId: isValidJobId ? jobId : undefined,
       userId: req.user?._id,
       jobTitle: finalJobTitle,
       company: finalCompany,
@@ -149,13 +152,15 @@ export const applyJob = async (req, res) => {
       });
     }
 
-    // sendApplicationEmail(application).catch((emailError) => {
-    //   console.log("ADMIN EMAIL ERROR:", emailError.message);
-    // });
+    setTimeout(() => {
+      sendApplicationEmail(application).catch((emailError) => {
+        console.log("ADMIN EMAIL ERROR:", emailError.message);
+      });
 
-    // sendUserConfirmationEmail(application).catch((emailError) => {
-    //   console.log("USER EMAIL ERROR:", emailError.message);
-    // });
+      sendUserConfirmationEmail(application).catch((emailError) => {
+        console.log("USER EMAIL ERROR:", emailError.message);
+      });
+    }, 0);
 
     return res.status(201).json({
       status: true,
