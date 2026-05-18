@@ -1,15 +1,16 @@
 import nodemailer from "nodemailer";
 import path from "path";
+import mongoose from "mongoose";
 import multer from "multer";
 import { Application } from "../models/applicationModel.js";
 import { Job } from "../models/jobModel.js";
 import { Notification } from "../models/notificationModel.js";
 
 const getTransporter = () => {
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) return null;
-
   return nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
@@ -22,49 +23,49 @@ const getTransporter = () => {
 
 const sendApplicationEmail = async (application) => {
   const transporter = getTransporter();
-  if (!transporter) return;
 
   await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
+    from: `"WorkNest" <${process.env.EMAIL_USER}>`,
+    to: process.env.ADMIN_EMAIL,
+    replyTo: application.email,
     subject: `New Job Application - ${application.jobTitle}`,
     html: `
-      <div style="font-family:Arial,sans-serif;background:#f8fafc;padding:24px">
-        <div style="max-width:620px;margin:auto;background:#ffffff;border-radius:18px;padding:24px;border:1px solid #e2e8f0">
-          <h2 style="color:#2563eb;margin-top:0">New Job Application</h2>
-          <p><b>Job Title:</b> ${application.jobTitle}</p>
-          <p><b>Company:</b> ${application.company}</p>
-          <p><b>Name:</b> ${application.name}</p>
-          <p><b>Email:</b> ${application.email}</p>
-          <p><b>Phone:</b> ${application.phone}</p>
-          <p><b>Resume:</b> <a href="${application.resume}">Open Resume</a></p>
-          <p><b>Cover Letter:</b></p>
-          <p>${application.coverLetter || "Not provided"}</p>
-        </div>
-      </div>
+      <h2>New Job Application</h2>
+
+      <p><b>Job:</b> ${application.jobTitle}</p>
+      <p><b>Company:</b> ${application.company}</p>
+      <p><b>Name:</b> ${application.name}</p>
+      <p><b>Email:</b> ${application.email}</p>
+      <p><b>Phone:</b> ${application.phone}</p>
+
+      <a href="${application.resume}">
+        Open Resume
+      </a>
     `,
   });
 };
 
 const sendUserConfirmationEmail = async (application) => {
   const transporter = getTransporter();
-  if (!transporter) return;
 
   await transporter.sendMail({
-    from: process.env.EMAIL_USER,
+    from: `"WorkNest" <${process.env.EMAIL_USER}>`,
     to: application.email,
-    subject: `Application received - ${application.jobTitle}`,
+    subject: `Application Received - ${application.jobTitle}`,
     html: `
-      <div style="font-family:Arial,sans-serif;background:#f8fafc;padding:24px">
-        <div style="max-width:620px;margin:auto;background:#ffffff;border-radius:18px;padding:24px;border:1px solid #e2e8f0">
-          <h2 style="color:#16a34a;margin-top:0">Application Submitted Successfully</h2>
-          <p>Hi ${application.name},</p>
-          <p>Your application for <b>${application.jobTitle}</b> at <b>${application.company}</b> has been received.</p>
-          <p>Status: <b>Pending</b></p>
-          <p>We will notify you when your status changes.</p>
-          <p style="color:#64748b;font-size:13px">WorkNest Team</p>
-        </div>
-      </div>
+      <h2>Application Submitted Successfully</h2>
+
+      <p>Hello ${application.name},</p>
+
+      <p>
+        Your application for
+        <b>${application.jobTitle}</b>
+        at
+        <b>${application.company}</b>
+        has been received.
+      </p>
+
+      <p>Status: Pending</p>
     `,
   });
 };
@@ -103,17 +104,24 @@ export const uploadResume = async (req, res) => {
 
 export const applyJob = async (req, res) => {
   try {
-    const { jobId, jobTitle, company, name, email, phone, resume, coverLetter } = req.body;
+    const { jobId, jobTitle, company, name, email, phone, resume, coverLetter } =
+      req.body;
 
     if (!jobTitle || !company || !name || !email || !phone || !resume) {
-      return res.status(400).json({ status: false, message: "All required fields are missing" });
+      return res.status(400).json({
+        status: false,
+        message: "All required fields are missing",
+      });
     }
+
+    const isValidJobId = jobId && mongoose.Types.ObjectId.isValid(jobId);
 
     let finalJobTitle = jobTitle;
     let finalCompany = company;
 
-    if (jobId) {
+    if (isValidJobId) {
       const job = await Job.findById(jobId);
+
       if (job) {
         finalJobTitle = job.title;
         finalCompany = job.company;
@@ -121,7 +129,7 @@ export const applyJob = async (req, res) => {
     }
 
     const application = await Application.create({
-      jobId: jobId || undefined,
+      jobId: isValidJobId ? jobId : undefined,
       userId: req.user?._id,
       jobTitle: finalJobTitle,
       company: finalCompany,
@@ -141,27 +149,29 @@ export const applyJob = async (req, res) => {
       });
     }
 
-    try {
-      await sendApplicationEmail(application);
-      await sendUserConfirmationEmail(application);
-    } catch (emailError) {
-      console.log("EMAIL ERROR:", emailError.message);
-      console.log("FULL EMAIL ERROR:", emailError);
+    // sendApplicationEmail(application).catch((emailError) => {
+    //   console.log("ADMIN EMAIL ERROR:", emailError.message);
+    // });
 
-      return res.status(201).json({
-        status: true,
-        message: "Application saved, but email failed",
-        data: application,
-        emailError: emailError.message,
-      });
-    }
+    // sendUserConfirmationEmail(application).catch((emailError) => {
+    //   console.log("USER EMAIL ERROR:", emailError.message);
+    // });
 
-    return res.status(201).json({ status: true, message: "Application submitted successfully", data: application });
+    return res.status(201).json({
+      status: true,
+      message: "Application submitted successfully",
+      data: application,
+    });
   } catch (error) {
-    return res.status(500).json({ status: false, message: "Application failed", error: error.message });
+    console.log("APPLICATION ERROR:", error.message);
+
+    return res.status(500).json({
+      status: false,
+      message: "Application failed",
+      error: error.message,
+    });
   }
 };
-
 export const myApplications = async (req, res) => {
   try {
     const applications = await Application.find({ userId: req.user._id }).sort({ createdAt: -1 });
