@@ -145,7 +145,7 @@ const ApplyForm = ({ job, onClose }) => {
               onChange={(e) => {
                 setResumeFile(e.target.files?.[0] || null);
               }}
-              className="w-full text-sm text-slate-700"
+              className="w-full text-sm text-slate-800"
             />
 
             <p className="mt-2 text-xs text-slate-500">
