@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { registerUser } from "../api/api";
 import { AuthContext } from "../context/AuthContext";
+import { notify } from "../utils/notify";
 
 const Signup = () => {
   const [formData, setFormData] = useState({ name: "", email: "", password: "", role: "user" });
@@ -21,7 +22,7 @@ const Signup = () => {
       .then((res) => {
         if (res.data.status) {
           login(res.data.user, res.data.token);
-          alert(res.data.message);
+          notify.success(res.data.message);
 
           if (res.data.user.role === "admin") {
             navigate("/admin/dashboard");
@@ -29,11 +30,11 @@ const Signup = () => {
             navigate("/dashboard");
           }
         } else {
-          alert(res.data.message);
+          notify.success(res.data.message);
         }
       })
       .catch((error) => {
-        alert(error.response?.data?.message || "Signup failed");
+        notify.error(error.response?.data?.message || "Signup failed");
       });
   };
 

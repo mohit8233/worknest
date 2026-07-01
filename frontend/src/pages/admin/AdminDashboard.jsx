@@ -11,6 +11,7 @@ import {
   updateApplicationStatus,
   updateJob,
 } from "../../api/api";
+import { notify } from "../../utils/notify";
 
 const emptyJob = {
   title: "",
@@ -95,19 +96,19 @@ const AdminDashboard = () => {
 
     deleteJob(id)
       .then((res) => {
-        alert(res.data.message);
+        notify.success(res.data.message);
         fetchJobs();
       })
-      .catch((error) => alert(error.response?.data?.message || "Job delete failed"));
+      .catch((error) => notify.error(error.response?.data?.message || "Job delete failed"));
   };
 
   const handleStatus = (id, status) => {
     updateApplicationStatus(id, { status })
       .then((res) => {
-        alert(res.data.message);
+        notify.success(res.data.message);
         fetchApplications();
       })
-      .catch((error) => alert(error.response?.data?.message || "Status update failed"));
+      .catch((error) => notify.error(error.response?.data?.message || "Status update failed"));
   };
 
   const pending = applications.filter((app) => app.status === "pending").length;

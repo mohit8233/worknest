@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { applyJobApi, uploadResumeApi } from "../api/api";
 import { AuthContext } from "../context/AuthContext";
-
+import { notify } from "../utils/notify";
 const fieldClass =
   "w-full rounded-2xl border border-slate-200 bg-slate-50 p-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100";
 
@@ -27,7 +27,7 @@ const ApplyForm = ({ job, onClose }) => {
     e.preventDefault();
 
     if (!resumeFile && !formData.resume) {
-      alert("Please upload resume or paste resume link");
+      notify.error("Please upload resume or paste resume link");
       return;
     }
 
@@ -72,13 +72,13 @@ const ApplyForm = ({ job, onClose }) => {
     request
       .then((res) => {
         console.log("APPLY SUCCESS:", res.data);
-        alert(res.data?.message || "Application submitted successfully");
+        notify.success(res.data?.message || "Application submitted successfully");
         onClose();
       })
       .catch((error) => {
         console.log("APPLY FULL ERROR:", error.response?.data || error.message);
 
-        alert(
+        notify.error(
           error.response?.data?.error ||
             error.response?.data?.message ||
             error.message ||

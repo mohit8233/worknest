@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { notify } from "../utils/notify";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -14,7 +15,7 @@ const ContactUs = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Message Sent Successfully!");
+    notify.success("Message Sent Successfully!");
     setFormData({ name: "", email: "", message: "" });
   };
 
