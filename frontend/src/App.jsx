@@ -11,7 +11,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
 import JobSection from "./jobSection/JobSection";
-
+import { Toaster } from "react-hot-toast";
 const App = () => {
   return (
     <div className="min-h-screen bg-white text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-white">
@@ -27,6 +27,7 @@ const App = () => {
         <Route path="/dashboard" element={<PrivateRoute><UserDashboard /></PrivateRoute>} />
         <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
       </Routes>
+      <Toaster position="top-right" />
     </div>
   );
 };

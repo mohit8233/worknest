@@ -12,11 +12,11 @@ export const createJob = async (req, res) => {
       type,
       description,
       requirements,
-      lastDate,
+      expireDate,
       featured,
     } = req.body;
 
-    if (!title || !company || !location || !salary || !description || !lastDate) {
+    if (!title || !company || !location || !salary || !description || !expireDate) {
       return res.status(400).json({
         status: false,
         message: "All required fields are missing",
@@ -33,9 +33,9 @@ export const createJob = async (req, res) => {
       type,
       description,
       requirements,
-      lastDate,
+      expireDate,
       featured: featured === true || featured === "true",
-      createdBy: req.user._id,
+      // createdBy: req.user._id,
     });
 
     return res.status(201).json({
@@ -44,12 +44,15 @@ export const createJob = async (req, res) => {
       data: job,
     });
   } catch (error) {
-    return res.status(500).json({
-      status: false,
-      message: "Job create failed",
-      error: error.message,
-    });
-  }
+  console.log("🔥 FULL ERROR:", error);
+  console.log("🔥 STACK:", error.stack);
+
+  return res.status(500).json({
+    status: false,
+    message: error.message,
+    stack: error.stack,
+  });
+}
 };
 
 export const getJobs = async (req, res) => {
