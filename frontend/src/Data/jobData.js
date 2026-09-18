@@ -7,7 +7,7 @@ const jobsData = [
     company: "Globe Solution Ltd.",
     time: "2h ago",
     category: "Creative",
-    expireDate: "2026-05-10",
+    expireDate: "2026-12-10",
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const jobsData = [
     company: "Globe Solution Ltd.",
     time: "2h ago",
     category: "Finance",
-    expireDate: "2024-01-01",
+    expireDate: "2026-12-15",
   },
   {
     id: 3,
@@ -27,7 +27,7 @@ const jobsData = [
     company: "Globe Solution Ltd.",
     time: "2h ago",
     category: "Medical",
-    expireDate: "2026-05-15",
+    expireDate: "2026-12-20",
   },
   {
     id: 4,
@@ -37,7 +37,7 @@ const jobsData = [
     company: "AdWorld Pvt Ltd",
     time: "1h ago",
     category: "Marketing",
-    expireDate: "2026-05-18",
+    expireDate: "2026-12-25",
   },
   {
     id: 5,
@@ -47,7 +47,7 @@ const jobsData = [
     company: "TechSoft",
     time: "30m ago",
     category: "IT",
-    expireDate: "2026-05-20",
+    expireDate: "2026-12-28",
   },
   {
     id: 6,
@@ -57,7 +57,7 @@ const jobsData = [
     company: "PeopleCorp",
     time: "3h ago",
     category: "Corporate",
-    expireDate: "2026-05-22",
+    expireDate: "2026-12-30",
   },
   {
     id: 7,
@@ -67,7 +67,7 @@ const jobsData = [
     company: "FinEdge",
     time: "5h ago",
     category: "Finance",
-    expireDate: "2026-05-24",
+    expireDate: "2026-12-31",
   },
   {
     id: 8,
@@ -77,17 +77,17 @@ const jobsData = [
     company: "DesignPro",
     time: "1d ago",
     category: "Creative",
-    expireDate: "2026-05-26",
+    expireDate: "2026-12-31",
   },
   {
     id: 9,
     title: "UI/UX Designer",
     location: "Remote",
     type: "Full Time",
-    category: "Creative",
     company: "PixelCraft Studio",
     time: "2d ago",
-    expireDate: "2026-05-28",
+    category: "Creative",
+    expireDate: "2026-12-31",
   },
   {
     id: 10,
@@ -97,7 +97,7 @@ const jobsData = [
     company: "TechSoft",
     time: "3h ago",
     category: "IT",
-    expireDate: "2026-05-30",
+    expireDate: "2026-12-31",
   },
   {
     id: 11,
@@ -107,17 +107,17 @@ const jobsData = [
     company: "TechSoft",
     time: "10m ago",
     category: "IT",
-    expireDate: "2026-06-02",
+    expireDate: "2026-12-31",
   },
   {
     id: 12,
-    title: "Full stack Developer",
+    title: "Full Stack Developer",
     location: "Remote/On-Site",
     type: "Full Time",
     company: "TechSoft",
     time: "3m ago",
     category: "IT",
-    expireDate: "2026-06-05",
+    expireDate: "2026-12-31",
   },
   {
     id: 13,
@@ -127,7 +127,7 @@ const jobsData = [
     company: "PixelCraft Studio",
     time: "Upcoming Time",
     category: "Upcoming",
-    expireDate: "2026-05-25",
+    expireDate: "2026-12-31",
   },
 ];
 
