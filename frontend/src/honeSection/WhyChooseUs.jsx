@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const WhyChooseUs = () => {
   return (
-    <section className="w-full min-h-screen mt-11 bg-blue-50 flex items-center justify-center overflow-hidden px-6">
+    <section className="w-full min-h-screen mt-11  flex items-center justify-center overflow-hidden px-6">
       <div className="w-full max-w-[1200px] grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
        
